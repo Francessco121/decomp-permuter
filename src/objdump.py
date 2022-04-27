@@ -144,6 +144,10 @@ def simplify_objdump(
                 # correct addend for each, but objdump doesn't give us the order of
                 # the relocations, so we can't find the right LO16. :(
                 repl = f"%hi({repl})"
+            elif "R_MIPS_GOT16" in row:
+                repl = f"%got({repl})"
+            elif "R_MIPS_CALL16" in row:
+                repl = f"%call16({repl})"
             else:
                 assert "R_MIPS_26" in row, f"unknown relocation type '{row}'"
             output_lines[-1] = before + repl + after
